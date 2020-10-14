@@ -13,6 +13,13 @@ Installing
 4. Run pip install -r requirements.txt
 
 
+Configuring
+--------------------------------------------
+1. Open .env file and change the date to something that is OLDER than all the files you want to initially convert to PDF. This will be updated after each successful run.
+2. Open app.py and change the variables there to match your system. You will need to setup your Teamp folders and Scaned Dir's etc.
+3. N/A for now
+
+
 Run
 --------------------------------------------
 1. blah blah blah
