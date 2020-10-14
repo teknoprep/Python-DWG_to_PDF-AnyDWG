@@ -14,6 +14,7 @@ dp_executable_path = r"C:\Program Files (x86)\Any DWG to PDF Converter Pro\dp.ex
 dp_option_PDFColor = r"GrayScale"       #Valid Options are TrueColors, GrayScale, BlackWhite
 dp_option_PDFQuality = r"High"          #Valid Options are Normal, Medium, High, Highest
 dp_option_HIDE = r"true"                #Valid Options are true or false
+dp_option_RUNMANY = r"true"             #Valid Options are true or fales --- this is setup so that your PDF Generator will run ALL files at once or one at a time
 
 
 
@@ -39,7 +40,9 @@ for search_folder in search_folders:
                     if created_date > datetime.strptime(last_date, '%Y-%m-%d %H:%M:%S'):
                         shutil.copyfile(source_file, os.path.join(work_folder, file))
                         print("i'll print this file", work_folder + '\\' + file, "to this location as a PDF", pdf_folder + '\\' + file)
-                        if dp_option_HIDE == 'true':
+                        if dp_option_RUNMANY == "true":
+                            RUN_DWG_PDF()
+                        elif dp_option_HIDE == 'true':
                             print("HIDEN WINDOW")
                             subprocess.call([dp_executable_path, '/InFile', work_folder + '\\' + file, '/OutFile', pdf_folder + '\\' + file, '/ConvertType', 'DWG2PDF', '/PDFColor', dp_option_PDFColor, '/PDFQuality', dp_option_PDFQuality, '/HIDE'])
                         else:
@@ -49,8 +52,10 @@ for search_folder in search_folders:
                         
                 except OSError:                    
                     mtime = 0
+                    
+def RUN_DWG_PDF():
+    subprocess.call([dp_executable_path, '/InFolder', work_folder, '/OutFolder', pdf_folder, '/ConvertType', 'DWG2PDF', '/PDFColor', dp_option_PDFColor, '/PDFQuality', dp_option_PDFQuality ])
+
 
 shutil.rmtree(work_folder)
-
-
 dotenv.set_key(dotenv_path, "LAST_DATE", START_SCRIPT_DATE)
