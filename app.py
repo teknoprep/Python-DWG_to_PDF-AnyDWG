@@ -13,7 +13,7 @@ search_folders = [r"c:\temp"]
 dp_executable_path = r"C:\Program Files (x86)\Any DWG to PDF Converter Pro\dp.exe"
 dp_option_PDFColor = r"GrayScale"       #Valid Options are TrueColors, GrayScale, BlackWhite
 dp_option_PDFQuality = r"High"          #Valid Options are Normal, Medium, High, Highest
-dp_option_HIDE = r"flase"                #Valid Options are true or false
+dp_option_HIDE = r"flase"               #Valid Options are true or false
 
 
 
@@ -38,16 +38,16 @@ for search_folder in search_folders:
                     created_date = datetime.fromtimestamp(mtime)
                     if created_date > datetime.strptime(last_date, '%Y-%m-%d %H:%M:%S'):
                         shutil.copyfile(source_file, os.path.join(work_folder, file))
+                        print("i'll print this file", work_folder + '\\' + file, "to this location as a PDF", pdf_folder + '\\' + file)
+                        if dp_option_HIDE == 'true':
+                            subprocess.call([dp_executable_path, '/InFile', work_folder + '\\' + file, '/OutFile', pdf_folder + '\\' + file, '/ConvertType', 'DWG2PDF', '/PDFColor', dp_option_PDFColor, '/PDFQuality', dp_option_PDFQuality, '/HIDE'])
+                        else:
+                            subprocess.call([dp_executable_path, '/InFile', work_folder + '\\' + file, '/OutFile', pdf_folder + '\\' + file, '/ConvertType', 'DWG2PDF', '/PDFColor', dp_option_PDFColor, '/PDFQuality', dp_option_PDFQuality ])
                         
                 except OSError:                    
                     mtime = 0
-if dp_option_HIDE == 'true':
-        subprocess.call([dp_executable_path, '/InFolder', work_folder, '/OutFolder', pdf_folder, '/ConvertType', 'DWG2PDF', '/PDFColor', dp_option_PDFColor, '/PDFQuality', dp_option_PDFQuality, '/HIDE' ])
-else:
-    subprocess.call([dp_executable_path, '/InFolder', work_folder, '/OutFolder', pdf_folder, '/ConvertType', 'DWG2PDF', '/PDFColor', dp_option_PDFColor, '/PDFQuality', dp_option_PDFQuality ])
 
 shutil.rmtree(work_folder)
 
 
-#dotenv.set_key(dotenv_path, "LAST_DATE", str(datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
 dotenv.set_key(dotenv_path, "LAST_DATE", START_SCRIPT_DATE)
