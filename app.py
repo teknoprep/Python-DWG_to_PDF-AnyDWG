@@ -20,7 +20,7 @@ def PDF_Converter():
     dp_option_PDFQuality = r"High"          #Valid Options are Normal, Medium, High, Highest
     dp_option_HIDE = r"true"                #Valid Options are true or false
     dp_option_RUNMANY = r"false"            #Valid Options are true or fales --- this is setup so that your PDF Generator will run ALL files at once or one at a time
-    rerun_wait_time = float(10)             #Time to wait in seconds before re_running_script --- change the number inside float()
+    rerun_wait_time = float(300)             #Time to wait in seconds before re_running_script --- change the number inside float() --- IF SET TO 0... this script only runs once
 
     
     dotenv_path = join(dirname(__file__), '.env')
@@ -63,7 +63,10 @@ def PDF_Converter():
     shutil.rmtree(work_folder)
     dotenv.set_key(dotenv_path, "LAST_DATE", START_SCRIPT_DATE)
     print("Waiting for", rerun_wait_time, "seconds before running again")
-    time.sleep(rerun_wait_time)
+    if rerun_wait_time == 0:
+        quit()
+    else:
+        time.sleep(rerun_wait_time)
     PDF_Converter()
 
 PDF_Converter()
