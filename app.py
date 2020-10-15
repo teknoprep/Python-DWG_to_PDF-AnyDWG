@@ -49,7 +49,7 @@ for search_folder in search_folders:
                 except OSError:                    
                     mtime = 0
 if dp_option_RUNMANY == 'true':
-    subprocess.call([dp_executable_path, '/InFolder', work_folder, '/OutFolder', pdf_folder, '/ConvertType', 'DWG2PDF', '/PDFColor', dp_option_PDFColor, '/PDFQuality', dp_option_PDFQuality, '/HIDE' ])
+    subprocess.call([dp_executable_path, '/InFolder', work_folder, '/OutFolder', pdf_folder, '/ConvertType', 'DWG2PDF', '/PDFColor', dp_option_PDFColor, '/PDFQuality', dp_option_PDFQuality ])
 else:
     print("why are you not doing everything at once")
 
