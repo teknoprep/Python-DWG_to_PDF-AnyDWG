@@ -7,25 +7,26 @@ import time
 
 START_SCRIPT_DATE = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
-#Please Update These Variables to Match your System Requirements
-pdf_folder = r"c:\temp\pdfout"
-work_folder = r"c:\temp\dwg_converter"
-search_folders = [r"c:\temp"]
-dp_executable_path = r"C:\Program Files (x86)\Any DWG to PDF Converter Pro\dp.exe"
-dp_option_PDFColor = r"GrayScale"       #Valid Options are TrueColors, GrayScale, BlackWhite
-dp_option_PDFQuality = r"High"          #Valid Options are Normal, Medium, High, Highest
-dp_option_HIDE = r"true"                #Valid Options are true or false
-dp_option_RUNMANY = r"false"            #Valid Options are true or fales --- this is setup so that your PDF Generator will run ALL files at once or one at a time
-rerun_wait_time = r"10"               #Time to wait in seconds before re_running_script
-
-
-dotenv_path = join(dirname(__file__), '.env')
-load_dotenv(dotenv_path)
-
-PDF_Converter()
-
 
 def PDF_Converter():
+    START_SCRIPT_DATE = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    
+    #Please Update These Variables to Match your System Requirements
+    pdf_folder = r"e:\pdfout"
+    work_folder = r"e:\temp\dwg_converter"
+    search_folders = [r"E:\Vaults\files\Drawings"]
+    dp_executable_path = r"C:\Program Files (x86)\Any DWG to PDF Converter Pro\dp.exe"
+    dp_option_PDFColor = r"GrayScale"       #Valid Options are TrueColors, GrayScale, BlackWhite
+    dp_option_PDFQuality = r"High"          #Valid Options are Normal, Medium, High, Highest
+    dp_option_HIDE = r"true"                #Valid Options are true or false
+    dp_option_RUNMANY = r"false"            #Valid Options are true or fales --- this is setup so that your PDF Generator will run ALL files at once or one at a time
+    rerun_wait_time = float(10)             #Time to wait in seconds before re_running_script --- change the number inside float()
+
+    
+    dotenv_path = join(dirname(__file__), '.env')
+    load_dotenv(dotenv_path)
+    
+    
     print(START_SCRIPT_DATE)
     dotenv_path = join(dirname(__file__), '.env')
     load_dotenv(dotenv_path)
@@ -53,15 +54,16 @@ def PDF_Converter():
     
                     except OSError:                    
                         mtime = 0
-if dp_option_RUNMANY == 'true':
-    subprocess.call([dp_executable_path, '/InFolder', work_folder, '/OutFolder', pdf_folder, '/ConvertType', 'DWG2PDF', '/PDFColor', dp_option_PDFColor, '/PDFQuality', dp_option_PDFQuality, '/RECOVER' ])
-else:
-    print("why are you not doing everything at once")
+    if dp_option_RUNMANY == 'true':
+        subprocess.call([dp_executable_path, '/InFolder', work_folder, '/OutFolder', pdf_folder, '/ConvertType', 'DWG2PDF', '/PDFColor', dp_option_PDFColor, '/PDFQuality', dp_option_PDFQuality, '/RECOVER' ])
+    else:
+        print("why are you not doing everything at once")
+    
+    
+    shutil.rmtree(work_folder)
+    dotenv.set_key(dotenv_path, "LAST_DATE", START_SCRIPT_DATE)
+    print("Waiting for", rerun_wait_time, "seconds before running again")
+    time.sleep(rerun_wait_time)
+    PDF_Converter()
 
-
-shutil.rmtree(work_folder)
-dotenv.set_key(dotenv_path, "LAST_DATE", START_SCRIPT_DATE)
-print("Waiting for", rerun_wait_time, "seconds before running again")
-time.sleep(rerun_wait_time)
 PDF_Converter()
-
