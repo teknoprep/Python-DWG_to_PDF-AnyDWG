@@ -7,7 +7,6 @@ import time
 
 START_SCRIPT_DATE = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
-
 def PDF_Converter():
     START_SCRIPT_DATE = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     
@@ -47,7 +46,8 @@ def PDF_Converter():
                             shutil.copyfile(source_file, os.path.join(work_folder, file))
                             print("i'll print this file", work_folder + '\\' + file, "to this location as a PDF", pdf_folder + '\\' + file)
                             if dp_option_RUNMANY == 'false':
-                                print("HIDEN WINDOW")
+                                file_convert_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                                print(file_convert_time)
                                 subprocess.call([dp_executable_path, '/InFile', work_folder + '\\' + file, '/OutFile', pdf_folder + '\\' + file, '/ConvertType', 'DWG2PDF', '/PDFColor', dp_option_PDFColor, '/PDFQuality', dp_option_PDFQuality,'/RECOVER', '/HIDE'])
                             else:
                                 print("Window Shown")
