@@ -6,9 +6,14 @@ import subprocess
 import time
 
 START_SCRIPT_DATE = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+dotenv_path = join(dirname(__file__), '.env')
+load_dotenv(dotenv_path)
+last_date = os.environ.get('LAST_DATE')
 
-def PDF_Converter():
+def PDF_Converter(last_date):
     START_SCRIPT_DATE = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    print("Last Date", last_date)
+    print("Start Script Date", START_SCRIPT_DATE)
     
     #Please Update These Variables to Match your System Requirements
     pdf_folder = r"e:\pdfout"
@@ -19,17 +24,11 @@ def PDF_Converter():
     dp_option_PDFQuality = r"High"          #Valid Options are Normal, Medium, High, Highest
     dp_option_HIDE = r"true"                #Valid Options are true or false
     dp_option_RUNMANY = r"false"            #Valid Options are true or fales --- this is setup so that your PDF Generator will run ALL files at once or one at a time
-    rerun_wait_time = float(300)             #Time to wait in seconds before re_running_script --- change the number inside float() --- IF SET TO 0... this script only runs once
+    rerun_wait_time = float(20)             #Time to wait in seconds before re_running_script --- change the number inside float() --- IF SET TO 0... this script only runs once
 
+     
+       
     
-    dotenv_path = join(dirname(__file__), '.env')
-    load_dotenv(dotenv_path)
-    
-    
-    print(START_SCRIPT_DATE)
-    dotenv_path = join(dirname(__file__), '.env')
-    load_dotenv(dotenv_path)
-    last_date = os.environ.get('LAST_DATE')
     if os.path.isdir(work_folder):
         shutil.rmtree(work_folder)
     os.mkdir(work_folder)
@@ -62,11 +61,13 @@ def PDF_Converter():
     
     shutil.rmtree(work_folder)
     dotenv.set_key(dotenv_path, "LAST_DATE", START_SCRIPT_DATE)
+    last_date = START_SCRIPT_DATE
+    print(last_date)
     print("Waiting for", rerun_wait_time, "seconds before running again")
     if rerun_wait_time == 0:
         quit()
     else:
         time.sleep(rerun_wait_time)
-    PDF_Converter()
+    PDF_Converter(last_date)
 
-PDF_Converter()
+PDF_Converter(last_date)
