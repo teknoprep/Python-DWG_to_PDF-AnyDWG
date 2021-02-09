@@ -49,6 +49,7 @@ def PDF_Converter():
                     try:
                         source_file = root + "\\" + file
                         mtime = os.path.getmtime(source_file)
+                        if mtime < os.path.getctime(source_file) : mtime = os.path.getctime(source_file)
                         created_date = datetime.fromtimestamp(mtime)
                         if created_date > last_date:
                             shutil.copyfile(source_file, os.path.join(work_folder, file))
