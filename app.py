@@ -61,11 +61,12 @@ def PDF_Converter():
                     try:
                         source_file = root + "\\" + file
                         source_file_timestamp = get_last_timestamp(source_file)
-                        if source_file in pdf_json.keys:
-                            if source_file_timestamp <= pdf_json[source_file]: 
+                        file_name = file[:-4]
+                        if file_name in pdf_json.keys():
+                            if source_file_timestamp <= pdf_json[file_name]: 
                                 continue
                         
-                        pdf_json[source_file] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                        pdf_json[file_name] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
                         shutil.copyfile(source_file, os.path.join(work_folder, file))
                         print("i'll print this file", work_folder + '\\' + file, "to this location as a PDF", pdf_folder + '\\' + file)
                         if dp_option_RUNMANY == 'false':
